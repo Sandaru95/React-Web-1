@@ -1,9 +1,22 @@
 import React, { Component } from "react";
+import Modal from "./modal";
+import Backdrop from "./backdrop";
 
 class Todo extends React.Component {
+    state = {
+        modalState: false,
+    };
     deleteHandler = () => {
-        console.log("Delete Handler was called!");
-        console.log(this.props.text);
+        this.setState({ modalState: true });
+    };
+    backdropClickHandler = () => {
+        this.setState({ modalState: false });
+    };
+    ModalCancelHandler = () => {
+        this.setState({ modalState: false });
+    };
+    ModalConfirmHandler = () => {
+        this.setState({ modalState: false });
     };
     render() {
         return (
@@ -14,6 +27,15 @@ class Todo extends React.Component {
                         Delete
                     </button>
                 </div>
+                {this.state.modalState && (
+                    <Modal
+                        ModalCancelHandler={this.ModalCancelHandler}
+                        ModalConfirmHandler={this.ModalConfirmHandler}
+                    />
+                )}
+                {this.state.modalState && (
+                    <Backdrop backdropOnClick={this.backdropClickHandler} />
+                )}
             </div>
         );
     }

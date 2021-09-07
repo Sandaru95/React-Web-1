@@ -11,8 +11,6 @@ function App() {
 			<Todo text="Master React" />
 			<Todo text="Make Projects with React" />
 			<Todo text="Teach React" />
-			<Modal />
-			<Backdrop />
 		</div>
 	);
 }
