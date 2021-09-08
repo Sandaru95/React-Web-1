@@ -1,37 +1,36 @@
 import React, { Component } from "react";
 import MeetupList from "../components/meetups/MeetupList";
 
-const DUMMY_DATA = [
-    {
-        id: "m1",
-        title: "This is the first meetup",
-        image: "https://pix10.agoda.net/hotelImages/124/1246280/1246280_16061017110043391702.jpg?s=1024x768",
-        address: "7/A Avenue Road, Colombo 5",
-        description: "This is the place for our first meetup",
-    },
-    {
-        id: "m2",
-        title: "This is the second meetup",
-        image: "https://p.bookcdn.com/data/Photos/r1280x722/10148/1014817/1014817417/Hotel-Sanushi-photos-Exterior-Hotel-Sanushi.JPEG",
-        address: "255/Queen Mary Road, Gampaha.",
-        description: "This is the place for our first meetup",
-    },
-    {
-        id: "m3",
-        title: "This is the third meetup",
-        image: "https://i.pinimg.com/originals/ca/40/e2/ca40e205b720c5c8364a348aa16bf066.jpg",
-        address: "276/B, Niwandama, Gampaha",
-        description: "This is the place for our first meetup",
-    },
-];
-
 class AllMeetupsPage extends React.Component {
+    state = {
+        meetupsArray: [],
+        isLoading: true,
+    };
+    componentDidMount() {
+        fetch(
+            "https://react-web-1-1756d-default-rtdb.asia-southeast1.firebasedatabase.app/meetups.json"
+        )
+            .then((response) => response.json())
+            .then((data) => {
+                const meetups = [];
+                for (const x in data) {
+                    meetups.push({ id: x, ...data[x] });
+                }
+                this.setState({ isLoading: false, meetupsArray: meetups });
+            });
+    }
+
     render() {
         return (
-            <section>
-                <h2>All Meetups</h2>
-                <MeetupList meetups={DUMMY_DATA} />
-            </section>
+            <React.Fragment>
+                {this.state.isLoading && <h2>Loading...</h2>}
+                {this.state.isLoading == false && (
+                    <section>
+                        <h2>All Meetups</h2>
+                        <MeetupList meetups={this.state.meetupsArray} />
+                    </section>
+                )}
+            </React.Fragment>
         );
     }
 }
